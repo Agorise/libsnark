@@ -258,20 +258,7 @@ void enter_block(const std::string &msg, const bool indent)
 #ifdef MULTICORE
 #pragma omp critical
 #endif
-    {
-        op_profiling_enter(msg);
 
-        print_indent();
-        printf("(enter) %-35s\t", msg.c_str());
-        print_times_from_last_and_start(t, t, cpu_t, cpu_t);
-        printf("\n");
-        fflush(stdout);
-
-        if (indent)
-        {
-            ++indentation;
-        }
-    }
 }
 
 void leave_block(const std::string &msg, const bool indent)
@@ -310,37 +297,11 @@ void leave_block(const std::string &msg, const bool indent)
 #ifdef MULTICORE
 #pragma omp critical
 #endif
-    {
-        if (indent)
-        {
-            --indentation;
-        }
-
-        print_indent();
-        printf("(leave) %-35s\t", msg.c_str());
-        print_times_from_last_and_start(t, enter_times[msg], cpu_t, enter_cpu_times[msg]);
-        print_op_profiling(msg);
-        printf("\n");
-        fflush(stdout);
-    }
 }
 
 void print_mem(const std::string &s)
 {
-#ifndef NO_PROCPS
-    struct proc_t usage;
-    look_up_our_self(&usage);
-    if (s.empty())
-    {
-        printf("* Peak vsize (physical memory+swap) in mebibytes: %lu\n", usage.vsize >> 20);
-    }
-    else
-    {
-        printf("* Peak vsize (physical memory+swap) in mebibytes (%s): %lu\n", s.c_str(), usage.vsize >> 20);
-    }
-#else
-    printf("* Memory profiling not supported in NO_PROCPS mode\n");
-#endif
+
 }
 
 void print_compilation_info()

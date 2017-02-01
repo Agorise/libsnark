@@ -29,18 +29,6 @@ alt_bn128_G1::alt_bn128_G1()
 
 void alt_bn128_G1::print() const
 {
-    if (this->is_zero())
-    {
-        printf("O\n");
-    }
-    else
-    {
-        alt_bn128_G1 copy(*this);
-        copy.to_affine_coordinates();
-        gmp_printf("(%Nd , %Nd)\n",
-                   copy.X.as_bigint().data, alt_bn128_Fq::num_limbs,
-                   copy.Y.as_bigint().data, alt_bn128_Fq::num_limbs);
-    }
 }
 
 void alt_bn128_G1::print_coordinates() const
@@ -412,7 +400,7 @@ std::ostream& operator<<(std::ostream &out, const alt_bn128_G1 &g)
     out << copy.X << OUTPUT_SEPARATOR << copy.Y;
 #else
     /* storing LSB of Y */
-    out << copy.X << OUTPUT_SEPARATOR << (copy.Y.as_bigint().data[0] & 1);
+ //   out << copy.X << OUTPUT_SEPARATOR << (copy.Y.as_bigint().data[0] & 1);
 #endif
 
     return out;

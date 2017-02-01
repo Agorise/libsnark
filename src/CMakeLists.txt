@@ -5,4 +5,5 @@ add_library(libsnark
 	algebra/curves/alt_bn128/alt_bn128_pairing.cpp
 	algebra/curves/alt_bn128/alt_bn128_pp.cpp
 	common/utils.cpp
+        common/profiling.cpp
 )

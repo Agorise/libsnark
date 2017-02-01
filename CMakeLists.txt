@@ -1,7 +1,8 @@
-cmake_minimum_required (VERSION 2.6)
-project (snark)
+#cmake_minimum_required (VERSION 2.6)
+#project (snark)
 
-include_directories("${GMT_INCLUDE_DIR}")
-include_directories("${SODIUM_INCLUDE_DIR}")
-include_directories ("${PROJECT_SOURCE_DIR}/src")
+#include_directories("${GMT_INCLUDE_DIR}")
+#include_directories("${SODIUM_INCLUDE_DIR}")
+set( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11" )
+include_directories ("src")
 add_subdirectory ("src") 
