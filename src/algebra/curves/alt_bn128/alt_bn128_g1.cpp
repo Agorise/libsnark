@@ -29,6 +29,18 @@ alt_bn128_G1::alt_bn128_G1()
 
 void alt_bn128_G1::print() const
 {
+    if (this->is_zero())
+    {
+        printf("O\n");
+    }
+    else
+    {
+        alt_bn128_G1 copy(*this);
+        copy.to_affine_coordinates();
+        gmp_printf("(%Nd , %Nd)\n",
+                    copy.X.as_bigint().data, alt_bn128_Fq::num_limbs,
+                    copy.Y.as_bigint().data, alt_bn128_Fq::num_limbs);
+    }
 }
 
 void alt_bn128_G1::print_coordinates() const
@@ -229,7 +241,7 @@ alt_bn128_G1 alt_bn128_G1::add(const alt_bn128_G1 &other) const
     alt_bn128_Fq S1 = (this->Y) * (other.Z) * Z2Z2;      // S1 = Y1 * Z2 * Z2Z2
     alt_bn128_Fq S2 = (other.Y) * (this->Z) * Z1Z1;      // S2 = Y2 * Z1 * Z1Z1
     alt_bn128_Fq H = U2 - U1;                            // H = U2-U1
-    alt_bn128_Fq S2_minus_S1 = S2-S1;
+    alt_bn128_Fq S2_minus_S1 = S2-S1;                    //
     alt_bn128_Fq I = (H+H).squared();                    // I = (2 * H)^2
     alt_bn128_Fq J = H * I;                              // J = H * I
     alt_bn128_Fq r = S2_minus_S1 + S2_minus_S1;          // r = 2 * (S2-S1)
@@ -400,7 +412,7 @@ std::ostream& operator<<(std::ostream &out, const alt_bn128_G1 &g)
     out << copy.X << OUTPUT_SEPARATOR << copy.Y;
 #else
     /* storing LSB of Y */
- //   out << copy.X << OUTPUT_SEPARATOR << (copy.Y.as_bigint().data[0] & 1);
+    out << copy.X << OUTPUT_SEPARATOR << (copy.Y.as_bigint().data[0] & 1);
 #endif
 
     return out;

@@ -146,7 +146,7 @@ bool r1cs_constraint_system<FieldT>::is_satisfied(const r1cs_primary_input<Field
 
         if (!(ares*bres == cres))
         {
-#ifdef DEBUG
+//#ifdef DEBUG
             auto it = constraint_annotations.find(c);
             printf("constraint %zu (%s) unsatisfied\n", c, (it == constraint_annotations.end() ? "no annotation" : it->second.c_str()));
             printf("<a,(1,x)> = "); ares.print();
@@ -154,7 +154,7 @@ bool r1cs_constraint_system<FieldT>::is_satisfied(const r1cs_primary_input<Field
             printf("<c,(1,x)> = "); cres.print();
             printf("constraint was:\n");
             dump_r1cs_constraint(constraints[c], full_variable_assignment, variable_annotations);
-#endif // DEBUG
+//#endif
             return false;
         }
     }

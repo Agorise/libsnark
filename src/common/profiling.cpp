@@ -239,6 +239,7 @@ void op_profiling_enter(const std::string &msg)
 
 void enter_block(const std::string &msg, const bool indent)
 {
+    std::cout << "enter {" << msg << "}" << std::endl;
     if (inhibit_profiling_counters)
     {
         return;
@@ -263,6 +264,7 @@ void enter_block(const std::string &msg, const bool indent)
 
 void leave_block(const std::string &msg, const bool indent)
 {
+    std::cout << "leave {" << msg << "}" << std::endl;
     if (inhibit_profiling_counters)
     {
         return;

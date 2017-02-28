@@ -23,7 +23,7 @@ bool alt_bn128_ate_G1_precomp::operator==(const alt_bn128_ate_G1_precomp &other)
 
 std::ostream& operator<<(std::ostream &out, const alt_bn128_ate_G1_precomp &prec_P)
 {
-  //  out << prec_P.PX << OUTPUT_SEPARATOR << prec_P.PY;
+    out << prec_P.PX << OUTPUT_SEPARATOR << prec_P.PY;
 
     return out;
 }
@@ -46,7 +46,7 @@ bool  alt_bn128_ate_ell_coeffs::operator==(const alt_bn128_ate_ell_coeffs &other
 
 std::ostream& operator<<(std::ostream &out, const alt_bn128_ate_ell_coeffs &c)
 {
-  //  out << c.ell_0 << OUTPUT_SEPARATOR << c.ell_VW << OUTPUT_SEPARATOR << c.ell_VV;
+    out << c.ell_0 << OUTPUT_SEPARATOR << c.ell_VW << OUTPUT_SEPARATOR << c.ell_VV;
     return out;
 }
 
@@ -70,12 +70,12 @@ bool alt_bn128_ate_G2_precomp::operator==(const alt_bn128_ate_G2_precomp &other)
 
 std::ostream& operator<<(std::ostream& out, const alt_bn128_ate_G2_precomp &prec_Q)
 {
- /*   out << prec_Q.QX << OUTPUT_SEPARATOR << prec_Q.QY << "\n";
+    out << prec_Q.QX << OUTPUT_SEPARATOR << prec_Q.QY << "\n";
     out << prec_Q.coeffs.size() << "\n";
     for (const alt_bn128_ate_ell_coeffs &c : prec_Q.coeffs)
     {
         out << c << OUTPUT_NEWLINE;
-    }*/
+    }
     return out;
 }
 

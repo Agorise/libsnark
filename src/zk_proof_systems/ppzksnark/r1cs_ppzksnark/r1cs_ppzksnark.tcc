@@ -41,11 +41,17 @@ bool r1cs_ppzksnark_proving_key<ppT>::operator==(const r1cs_ppzksnark_proving_ke
 template<typename ppT>
 std::ostream& operator<<(std::ostream &out, const r1cs_ppzksnark_proving_key<ppT> &pk)
 {
-    out << pk.A_query;
-    out << pk.B_query;
-    out << pk.C_query;
-    out << pk.H_query;
-    out << pk.K_query;
+    out << pk.A_query << OUTPUT_NEWLINE;
+    out << pk.B_query << OUTPUT_NEWLINE;
+    out << pk.C_query << OUTPUT_NEWLINE;
+    size_t s = pk.H_query.size();
+    out << s << OUTPUT_NEWLINE;
+    for(size_t idx = 0; idx < s; ++idx)\
+        out << pk.H_query[idx] << OUTPUT_NEWLINE;
+    s = pk.K_query.size();
+    out << s << OUTPUT_NEWLINE;
+    for(size_t idx = 0; idx < s; ++idx)
+        out << pk.K_query[idx] << OUTPUT_NEWLINE;
 
     return out;
 }
@@ -54,10 +60,28 @@ template<typename ppT>
 std::istream& operator>>(std::istream &in, r1cs_ppzksnark_proving_key<ppT> &pk)
 {
     in >> pk.A_query;
+    consume_OUTPUT_NEWLINE(in);
     in >> pk.B_query;
+    consume_OUTPUT_NEWLINE(in);
     in >> pk.C_query;
-    in >> pk.H_query;
-    in >> pk.K_query;
+    consume_OUTPUT_NEWLINE(in);
+    size_t s = 0;
+    in >> s;
+    consume_OUTPUT_NEWLINE(in);
+    pk.H_query.resize(s);
+    for(size_t idx = 0; idx < s; ++idx)
+    {
+        in >> pk.H_query[idx];
+        consume_OUTPUT_NEWLINE(in);
+    }
+    in >> s;
+    consume_OUTPUT_NEWLINE(in);
+    pk.K_query.resize(s);
+    for(size_t idx = 0; idx < s; ++idx)
+    {
+        in >> pk.K_query[idx];
+        consume_OUTPUT_NEWLINE(in);
+    }
 
     return in;
 }
@@ -65,7 +89,7 @@ std::istream& operator>>(std::istream &in, r1cs_ppzksnark_proving_key<ppT> &pk)
 template<typename ppT>
 bool r1cs_ppzksnark_verification_key<ppT>::operator==(const r1cs_ppzksnark_verification_key<ppT> &other) const
 {
-    return (this->alphaA_g2 == other.alphaA_g2 &&
+        return (this->alphaA_g2 == other.alphaA_g2 &&
             this->alphaB_g1 == other.alphaB_g1 &&
             this->alphaC_g2 == other.alphaC_g2 &&
             this->gamma_g2 == other.gamma_g2 &&
@@ -457,6 +481,7 @@ r1cs_ppzksnark_proof<ppT> r1cs_ppzksnark_prover(const r1cs_ppzksnark_proving_key
     assert(qap_inst.is_satisfied(qap_wit));
 #endif
 
+    enter_block("Calc knowledge commitments");
     knowledge_commitment<G1<ppT>, G1<ppT> > g_A = pk.A_query[0] + qap_wit.d1*pk.A_query[qap_wit.num_variables()+1];
     knowledge_commitment<G2<ppT>, G1<ppT> > g_B = pk.B_query[0] + qap_wit.d2*pk.B_query[qap_wit.num_variables()+1];
     knowledge_commitment<G1<ppT>, G1<ppT> > g_C = pk.C_query[0] + qap_wit.d3*pk.C_query[qap_wit.num_variables()+1];
@@ -466,6 +491,7 @@ r1cs_ppzksnark_proof<ppT> r1cs_ppzksnark_prover(const r1cs_ppzksnark_proving_key
                    qap_wit.d1*pk.K_query[qap_wit.num_variables()+1] +
                    qap_wit.d2*pk.K_query[qap_wit.num_variables()+2] +
                    qap_wit.d3*pk.K_query[qap_wit.num_variables()+3]);
+    leave_block("Calc knowledge commitments");
 
 #ifdef DEBUG
     for (size_t i = 0; i < qap_wit.num_inputs() + 1; ++i)

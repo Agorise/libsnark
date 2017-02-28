@@ -9,4 +9,10 @@ inline void assert_except(bool condition) {
     }
 }
 
+inline void assert_msg(bool condition, const std::string& msg) {
+    if (!condition) {
+        throw std::runtime_error(msg);
+    }
+}
+
 #endif
